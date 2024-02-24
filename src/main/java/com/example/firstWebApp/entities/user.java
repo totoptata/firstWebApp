@@ -8,16 +8,35 @@ import java.io.Serializable;
 @Table(name = "users")
 public class user implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String firstName;
     private String secondName;
+    private String UserName;
+    private String password;
+
     private String  email;
     private String address;
     private String phoneNumber;
 
     public user() {
 
+    }
+
+    public String getUserName() {
+        return UserName;
+    }
+
+    public void setUserName(String userName) {
+        UserName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Long getId() {
@@ -68,12 +87,29 @@ public class user implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public user(Long id, String firstName, String secondName, String email, String address, String phoneNumber) {
+    public user(Long id, String firstName, String secondName, String email, String address, String phoneNumber,String UserName,String password) {
         this.id = id;
+        this.UserName=UserName;
+        this.password=password;
+
         this.firstName = firstName;
         this.secondName = secondName;
         this.email = email;
         this.address = address;
         this.phoneNumber = phoneNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "user{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", UserName='" + UserName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
     }
 }

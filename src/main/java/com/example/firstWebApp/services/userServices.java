@@ -11,7 +11,8 @@ import java.util.Optional;
 @Service
 public class userServices {
     @Autowired
-    userRepository repository;
+   private userRepository repository;
+
 
     public user addUser(user u)
     {
@@ -25,4 +26,9 @@ public class userServices {
     {
         return repository.findById(id);
     }
-}
+    public Optional<user> login(String UserName,String password) {
+        return repository.login(UserName,password);
+    }
+
+    }
+

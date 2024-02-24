@@ -1,0 +1,120 @@
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Web App</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="number"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Sign Up</h2>
+    <form id="userForm">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" name="firstName">
+
+        <label for="secondName">Second Name</label>
+        <input type="text" id="secondName" name="secondName">
+
+        <label for="address">Address</label>
+        <input type="text" id="address" name="address">
+
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email">
+
+        <label for="phoneNumber">Phone Number</label>
+        <input type="tel" id="phoneNumber" name="phoneNumber">
+
+        <label for="UserName">Username</label>
+        <input type="text" id="UserName" name="UserName">
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password">
+
+        <input type="submit" value="Save">
+    </form>
+</div>
+<script>
+    $(document).ready(function () {
+     $("#userForm").submit(function (event) {
+    // alert("I am here")
+    event.preventDefault();
+    let user = {
+    firstName: $("#firstName").val(),
+    secondName: $("#secondName").val(),
+    email: $("#email").val(),
+    address: $("#address").val(),
+    phoneNumber: $("#phoneNumber").val(),
+    userName: $("#UserName").val(),
+    password: $("#password").val()
+
+};
+
+//alert(JSON.stringify(user))
+
+    $.ajax({
+    type: "POST",
+    url: "/users/addUser",
+    contentType: "application/json",
+    data: JSON.stringify(user),
+    success: function () {
+    alert("user saved successfully!");
+    window.location.href="/index.html"
+    //addRow(user)
+
+},
+    error: function (error) {
+        alert("error");
+    console.log("Error saving person: ", error);
+}
+});
+});
+    });
+</script>
+</body>
+</html>

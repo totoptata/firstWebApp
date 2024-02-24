@@ -29,4 +29,10 @@ public class userController {
     {
         return userServices.findUserById(id);
     }
+    @GetMapping("/user/login/{UserName}/{password}")
+    public @ResponseBody Optional<user> login(@PathVariable String UserName,@PathVariable String password){
+        return userServices.login(UserName,password);
+    }
+
+
 }
