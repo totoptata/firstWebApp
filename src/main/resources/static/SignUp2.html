@@ -2,6 +2,7 @@
 
 <html lang="en">
 <head>
+    <title>signUp</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>First Web App</title>
@@ -95,16 +96,19 @@
 
 };
 
-//alert(JSON.stringify(user))
+alert(JSON.stringify(user))
 
     $.ajax({
     type: "POST",
     url: "/users/addUser",
     contentType: "application/json",
     data: JSON.stringify(user),
-    success: function () {
+    success: function (data) {
     alert("user saved successfully!");
-    window.location.href="/index.html"
+            localStorage.setItem("user_id", data.id);
+                window.location.href = "/profile.html";
+
+
     //addRow(user)
 
 },
