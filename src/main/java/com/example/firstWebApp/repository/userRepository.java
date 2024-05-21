@@ -13,5 +13,11 @@ public interface userRepository extends JpaRepository<user,Long> {
    @Query("select a from user a where a.UserName= :UserName and a.password= :password")
     Optional<user> login(@Param(value = "UserName") String UserName, @Param(value = "password") String password);
 
+    @Repository
+    public interface UserRepository extends JpaRepository<user, Long> {
+        Optional<user> findUserById(Long id);
+        // Additional query methods if needed
     }
+
+}
 

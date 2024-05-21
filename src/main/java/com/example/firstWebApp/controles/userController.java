@@ -15,28 +15,23 @@ import java.util.Optional;
 public class userController {
 
     @Autowired
-    private userServices userServices;
+    private static userServices userServices;
+
     @PostMapping("/users/addUser")
-    public @ResponseBody user addUser(@RequestBody user u)
-    {
+    public @ResponseBody user addUser(@RequestBody user u) {
         return userServices.addUser(u);
     }
 
     @GetMapping("/users/getAll")
-    public @ResponseBody ArrayList<user> getAll()
-    {
+    public @ResponseBody ArrayList<user> getAll() {
         return userServices.getAll();
     }
 
     @GetMapping("/user/findUserId/{id}")
-    public @ResponseBody Optional<user> findUserById(@PathVariable long id)
-    {
+    public @ResponseBody Optional<user> findUserById(@PathVariable("id") long id) {
         return userServices.findUserById(id);
     }
-    /*@PostMapping("/user/login")
-    public @ResponseBody Optional<user> login(@RequestParam(value="userName") String userName, @RequestParam(value="password") String password){
-        return Optional.of(userServices.login(userName, password).orElseThrow());
-    }*/
+
     @PostMapping("/user/login")
     public ResponseEntity<?> loginUser(@RequestBody Map<String, String> userCredentials) {
         String UserName = userCredentials.get("UserName");
@@ -47,19 +42,48 @@ public class userController {
                 .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null));
     }
 
-  /*  @DeleteMapping("/user/deleteUserById/{id}")
-    public @ResponseBody String deleteUserById(@PathVariable Long id)
-    {
-        userServices.deleteUserById(id);
-        return "DONE!";
-    }
-   @PutMapping("/update/{id}")
+    @PutMapping("/update/{id}")
     public user updateUser(@PathVariable("id") Long id, @RequestBody user updatedUser) {
         System.out.println("i am an udated user control=" + updatedUser.getUserName() + updatedUser.getEmail());
 
-        userController userService = null;
-        return userService.updateUser(id, updatedUser);
-  }*/
-
-
+        return userServices.updateUser(id, updatedUser);
     }
+@DeleteMapping("/user/deleteUserById/{id}")
+    public @ResponseBody String deleteUserById(@PathVariable Long id) throws com.example.firstWebApp.services.userServices.UserNotFoundException {
+        userServices.deleteUserById(id);
+        return "DONE!";
+    }
+    @DeleteMapping("/user/delete/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable("id") Long id) throws com.example.firstWebApp.services.userServices.UserNotFoundException {
+        try {
+            Optional<user> userOptional = userServices.findUserById(id);
+            if (userOptional.isPresent()) {
+                userServices.deleteUserById(id);
+                return ResponseEntity.ok().body("User deleted successfully.");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete user.");
+        }
+    }
+    @RestController
+    public static class UserController {
+
+
+
+        @DeleteMapping("/user/delete/{id}")
+        public ResponseEntity<String> deleteUser(@PathVariable("id") Long id) {
+            try {
+                userServices.deleteUserById(id);
+                return ResponseEntity.ok().body("User deleted successfully.");
+            } catch (com.example.firstWebApp.services.userServices.UserNotFoundException e) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete user.");
+            }
+        }
+    }
+
+
+}

@@ -87,6 +87,7 @@ public class user implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
+
     public user(Long id, String firstName, String secondName, String email, String address, String phoneNumber,String UserName,String password) {
         this.id = id;
         this.UserName=UserName;
